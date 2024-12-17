@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Node.js + Express + TypeScript Clean Architecture CLI",
   "main": "index.js",
+  "bin": {
+    "clean-ts": "./dist/index.js"
+  },
   "scripts": {
     "dev": "nodemon --watch src --ext ts --exec ts-node src/index.ts",
     "build": "rimraf dist && tsc",

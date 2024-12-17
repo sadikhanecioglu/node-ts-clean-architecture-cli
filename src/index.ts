@@ -19,6 +19,7 @@ program
   .argument('<modulename>', 'modulename')
   .argument('<types>', 'types')
   .option('-p, --path <path>', '../../node-ts-clean-architecture-api/src')
+  .option('-test, --test')
   .description('Create a new module')
   .action((modulename, types, options) => {
 
@@ -31,19 +32,24 @@ program
       return;
     }
     if (!options.path) {
-      console.error('Path is required');
-      return;
+      // console.error('Path is required');
+      // return;
+      options.path = '../../node-ts-clean-architecture-api/src'
     }
 
     const TypeData = JSON.parse(types);
     const basePath = path.join(__dirname, options.path);
 
-    console.log('Creating module...');
+
     console.log(`Module name: ${modulename}`);
     console.log(`Path : ${basePath}`);
 
 
+    if(options.test)
+      return;
 
+
+    console.log('Creating module...');
     writeEntity(modulename, TypeData, basePath);
     console.log(`${modulename} entity created successfully!`);
     writeCreateDto(modulename, TypeData, basePath);
@@ -68,15 +74,7 @@ program
   });
 
 
-program.command('split')
-  .description('Split a string into substrings and display as an array')
-  .argument('<string>', 'string to split')
-  .option('--first', 'display just the first substring')
-  .option('-s, --separator <char>', 'separator character', ',')
-  .action((str, options) => {
-    const limit = options.first ? 1 : undefined;
-    console.log(str.split(options.separator, limit));
-  });
+
 // CLI'yi başlat
 program.parse();
 
