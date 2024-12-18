@@ -17,7 +17,8 @@ export default function getControllerTemplate(controllerName: string, dependenci
     }).join("\n\n");
 
     return `import { inject, injectable } from "inversify";
-import { BaseController } from "../abstraction/base.controller";
+            import { Request, Response } from 'express';
+            import { BaseController } from "../abstraction/base.controller";
 ${dependencies.map(dep => `import { ${dep.type} } from "${dep.importPath}";`).join("\n")}
 
 @injectable()

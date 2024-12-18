@@ -11,7 +11,7 @@ export default function getMongooseSchemaTemplate(modelName: string, schemaDefin
     const interfaceFields = Object.keys(schemaDefinition).map(field => {
 
 
-        return `${field}: ${schemaDefinition[field].type};`;
+        return `${field}: ${schemaDefinition[field].type.toLowerCase()};`;
     }).join("\n");
 
 
@@ -21,6 +21,7 @@ export default function getMongooseSchemaTemplate(modelName: string, schemaDefin
 
 
             interface I${modelName} extends Document {
+            id:string;
             ${interfaceFields}
             }
 
