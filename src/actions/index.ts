@@ -6,3 +6,4 @@ export {default as writeCreateDto} from './create.dto.action';
 export {default as writeRouter} from './router.action';
 export {default as writeController} from './controller.action';
 export {default as writeCreateUseCase} from './create.usecase.action';
+export {default as writeFiles} from './file.action';
