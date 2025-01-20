@@ -46,7 +46,19 @@ program
 
       const input =
         `
-        Generate code for a new module named ${modulename}. The entity has the following fields: ${types}. Use the folder structure and templates provided.
+       Generate code for a new module named ${modulename}. The entity has the following fields: ${types}. Use the folder structure and templates provided.
+
+        Output the result as a JSON object with the following format:
+        {
+          "content": "<Generated code here>",
+          "path": "<Path of the file in the folder structure>"
+        }
+
+        Example output:
+        {
+          "content": "export class User { constructor(public readonly id: string, public readonly name: string) {} }",
+          "path": "/src/domain/entities/user.entity.ts"
+        }
  
         `
       console.log("Getting code from AI...");
