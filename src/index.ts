@@ -4,9 +4,10 @@ import * as path from 'path';
 import { getEntityTemplate, getMongooseSchemaTemplate, getMongoRepositoryTemplate, getRepositoryInterfaceTemplate } from './template_code/index';
 import { writeController, writeCreateDto, writeCreateUseCase, writeEntity, writeFiles, writeInterfaces, writeModel, writeMongoRepository, writeRouter } from './actions';
 import Gemini from './llm/gemini';
+import { getAllFiles } from './utility/getAllFiles';
+import * as dotenv from 'dotenv';
 
-
-
+dotenv.config();
 
 const program = new Command();
 
@@ -44,23 +45,43 @@ program
 
     if (options.ai === 'gemini') {
 
-      const input =
-        `
-       Generate code for a new module named ${modulename}. The entity has the following fields: ${types}. Use the folder structure and templates provided.
 
-        Output the result as a JSON object with the following format:
+      const allfiles = await getAllFiles({
+        basePath: basePath+'/src',
+        options: {}
+      });
+
+      console.log('allfiles', allfiles);
+
+
+      const input = `
+        Generate code for a new module named ${modulename}. The entity has the following fields: ${types}. 
+        Use the folder structure and templates provided. 
+
+        Additionally, here is the list of existing files in the project structure:
+        ${JSON.stringify(allfiles, null, 2)}
+
+        Ensure the generated code does not conflict with existing files and integrates seamlessly into the current architecture.
+
+        Output the result as a JSON array where each object has the following format:
         {
           "content": "<Generated code here>",
           "path": "<Path of the file in the folder structure>"
         }
 
         Example output:
-        {
-          "content": "export class User { constructor(public readonly id: string, public readonly name: string) {} }",
-          "path": "/src/domain/entities/user.entity.ts"
-        }
- 
-        `
+        [
+          {
+            "content": "export class User { constructor(public readonly id: string, public readonly name: string) {} }",
+            "path": "/src/domain/entities/user.entity.ts"
+          },
+          {
+            "content": "import { Router } from 'express'; const router = Router(); export default router;",
+            "path": "/src/presentation/routes/user.route.ts"
+          }
+        ]
+      `;
+
       console.log("Getting code from AI...");
       const result = await Gemini({ input: JSON.stringify(input) });
       console.log(`AI Result: ${result}`);
